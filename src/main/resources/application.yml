@@ -1,0 +1,45 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: lease-application
+
+  datasource:
+    # Works with any Postgres host: Neon, Supabase, Railway, Render, ElephantSQL, or local Docker.
+    # Set these as environment variables in your hosting platform's dashboard.
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/lease_application}
+    username: ${DB_USERNAME:lease_user}
+    password: ${DB_PASSWORD:lease_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      # Flyway owns the schema; Hibernate should only validate it matches, never auto-generate/alter.
+      ddl-auto: validate
+    show-sql: ${SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    root: INFO
+    com.leaseapp: ${APP_LOG_LEVEL:INFO}

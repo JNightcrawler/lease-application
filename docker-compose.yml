@@ -1,0 +1,25 @@
+version: "3.9"
+
+# Local Postgres for development only. In production, point DB_URL/DB_USERNAME/
+# DB_PASSWORD at a free hosted Postgres instead (Neon, Supabase, Railway, Render).
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lease-application-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lease_application
+      POSTGRES_USER: lease_user
+      POSTGRES_PASSWORD: lease_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - lease_application_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lease_user -d lease_application"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  lease_application_pgdata:
