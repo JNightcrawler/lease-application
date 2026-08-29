@@ -1,6 +1,5 @@
 package com.leaseapp.controller;
 
-import com.leaseapp.dto.ApiResponse;
 import com.leaseapp.dto.MaterialDto;
 import com.leaseapp.service.MaterialService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +35,8 @@ public class MaterialController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<MaterialDto.Response> create(@Valid @RequestBody MaterialDto.CreateRequest req) {
-        return ApiResponse.ok(materialService.create(req));
+    public com.leaseapp.dto.ApiResponse<MaterialDto.Response> create(@Valid @RequestBody MaterialDto.CreateRequest req) {
+        return com.leaseapp.dto.ApiResponse.ok(materialService.create(req));
     }
 
     @GetMapping
@@ -46,9 +45,9 @@ public class MaterialController {
             @ApiResponse(responseCode = "200", description = "Materials retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<List<MaterialDto.Response>> getAll() {
+    public com.leaseapp.dto.ApiResponse<List<MaterialDto.Response>> getAll() {
         List<MaterialDto.Response> materials = materialService.findAll();
-        return ApiResponse.ok(materials, materials.size());
+        return com.leaseapp.dto.ApiResponse.ok(materials, materials.size());
     }
 
     @GetMapping("/{id}")
@@ -58,10 +57,10 @@ public class MaterialController {
             @ApiResponse(responseCode = "404", description = "Material not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<MaterialDto.Response> getById(
+    public com.leaseapp.dto.ApiResponse<MaterialDto.Response> getById(
             @Parameter(description = "Material UUID", required = true)
             @PathVariable UUID id) {
-        return ApiResponse.ok(materialService.findById(id));
+        return com.leaseapp.dto.ApiResponse.ok(materialService.findById(id));
     }
 
     @PutMapping("/{id}")
@@ -72,11 +71,11 @@ public class MaterialController {
             @ApiResponse(responseCode = "404", description = "Material not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<MaterialDto.Response> update(
+    public com.leaseapp.dto.ApiResponse<MaterialDto.Response> update(
             @Parameter(description = "Material UUID", required = true)
             @PathVariable UUID id,
             @Valid @RequestBody MaterialDto.UpdateRequest req) {
-        return ApiResponse.ok(materialService.update(id, req));
+        return com.leaseapp.dto.ApiResponse.ok(materialService.update(id, req));
     }
 
     @DeleteMapping("/{id}")
@@ -86,10 +85,10 @@ public class MaterialController {
             @ApiResponse(responseCode = "404", description = "Material not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<Void> delete(
+    public com.leaseapp.dto.ApiResponse<Void> delete(
             @Parameter(description = "Material UUID", required = true)
             @PathVariable UUID id) {
         materialService.delete(id);
-        return ApiResponse.message("Material deleted successfully");
+        return com.leaseapp.dto.ApiResponse.message("Material deleted successfully");
     }
 }

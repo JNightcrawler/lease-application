@@ -1,6 +1,5 @@
 package com.leaseapp.controller;
 
-import com.leaseapp.dto.ApiResponse;
 import com.leaseapp.dto.OrderDetailDto;
 import com.leaseapp.service.OrderDetailService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +35,8 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "400", description = "Invalid input data or insufficient stock"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<OrderDetailDto.Response> create(@Valid @RequestBody OrderDetailDto.CreateRequest req) {
-        return ApiResponse.ok(orderDetailService.create(req));
+    public com.leaseapp.dto.ApiResponse<OrderDetailDto.Response> create(@Valid @RequestBody OrderDetailDto.CreateRequest req) {
+        return com.leaseapp.dto.ApiResponse.ok(orderDetailService.create(req));
     }
 
     @GetMapping
@@ -46,11 +45,11 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "200", description = "Order details retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<List<OrderDetailDto.Response>> getAll(
+    public com.leaseapp.dto.ApiResponse<List<OrderDetailDto.Response>> getAll(
             @Parameter(description = "Filter by Order UUID", required = false)
             @RequestParam(required = false) UUID orderNumber) {
         List<OrderDetailDto.Response> details = orderDetailService.findAll(orderNumber);
-        return ApiResponse.ok(details, details.size());
+        return com.leaseapp.dto.ApiResponse.ok(details, details.size());
     }
 
     @GetMapping("/{id}")
@@ -60,10 +59,10 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "404", description = "Order detail not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<OrderDetailDto.Response> getById(
+    public com.leaseapp.dto.ApiResponse<OrderDetailDto.Response> getById(
             @Parameter(description = "Order Detail UUID", required = true)
             @PathVariable UUID id) {
-        return ApiResponse.ok(orderDetailService.findById(id));
+        return com.leaseapp.dto.ApiResponse.ok(orderDetailService.findById(id));
     }
 
     @PutMapping("/{id}")
@@ -74,11 +73,11 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "404", description = "Order detail not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<OrderDetailDto.Response> update(
+    public com.leaseapp.dto.ApiResponse<OrderDetailDto.Response> update(
             @Parameter(description = "Order Detail UUID", required = true)
             @PathVariable UUID id,
             @Valid @RequestBody OrderDetailDto.UpdateRequest req) {
-        return ApiResponse.ok(orderDetailService.update(id, req));
+        return com.leaseapp.dto.ApiResponse.ok(orderDetailService.update(id, req));
     }
 
     @PatchMapping("/{id}/return")
@@ -88,12 +87,12 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "404", description = "Order detail not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<OrderDetailDto.Response> returnMaterial(
+    public com.leaseapp.dto.ApiResponse<OrderDetailDto.Response> returnMaterial(
             @Parameter(description = "Order Detail UUID", required = true)
             @PathVariable UUID id,
             @RequestBody(required = false) OrderDetailDto.ReturnRequest req) {
         OrderDetailDto.ReturnRequest body = req != null ? req : new OrderDetailDto.ReturnRequest();
-        return ApiResponse.ok(orderDetailService.returnMaterial(id, body));
+        return com.leaseapp.dto.ApiResponse.ok(orderDetailService.returnMaterial(id, body));
     }
 
     @DeleteMapping("/{id}")
@@ -103,10 +102,10 @@ public class OrderDetailController {
             @ApiResponse(responseCode = "404", description = "Order detail not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ApiResponse<Void> delete(
+    public com.leaseapp.dto.ApiResponse<Void> delete(
             @Parameter(description = "Order Detail UUID", required = true)
             @PathVariable UUID id) {
         orderDetailService.delete(id);
-        return ApiResponse.message("Order detail deleted successfully");
+        return com.leaseapp.dto.ApiResponse.message("Order detail deleted successfully");
     }
 }
