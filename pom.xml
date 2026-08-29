@@ -70,13 +70,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Load .env file for environment variables -->
-        <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>java-dotenv</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <!-- Springdoc OpenAPI for Swagger UI -->
         <dependency>
             <groupId>org.springdoc</groupId>
